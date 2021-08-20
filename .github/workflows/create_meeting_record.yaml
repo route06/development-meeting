@@ -5,12 +5,15 @@ on:
     - cron: '0 4 * * fri'
   # workflow_dispatch:
 jobs:
-  create_nippo:
+  create_issue:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
       - name: Create a new issue
-        run: gh issue create --title "雑談会ログ - `date '+%Y/%m/%d'`" --body "今週の雑談会のログです:memo:"
+        run: |
+          latest=$(gh issue list --jq '.[].title' --json title --search "雑談会 sort:created-desc" --limit 10 | grep 回 | grep -oE '[0-9]+' | head -1)
+          latest=$(($latest+1))
+          gh issue create --title "第${latest}回 雑談会ログ - `date '+%Y/%m/%d'`" --body "今週の雑談会のログです:memo:"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

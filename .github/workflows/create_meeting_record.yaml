@@ -3,7 +3,7 @@ on:
   schedule:
     # 毎週金曜 13:00 JST
     - cron: '0 4 * * fri'
-  # workflow_dispatch:
+  workflow_dispatch:
 jobs:
   create_issue:
     runs-on: ubuntu-latest

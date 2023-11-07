@@ -1,9 +1,9 @@
 name: Create Meeting Record issue
 on:
   schedule:
-    # 毎週金曜 13:00 JST
-    - cron: '0 4 * * fri'
-  # workflow_dispatch:
+    # 毎週月曜日 10:00 JST
+    - cron: '0 1 * * mon'
+  workflow_dispatch:
 jobs:
   create_issue:
     runs-on: ubuntu-latest
@@ -14,6 +14,6 @@ jobs:
         run: |
           latest=$(gh issue list --jq '.[].title' --json title --search "雑談会 sort:created-desc" --limit 10 | grep 回 | grep -oE '[0-9]+' | head -1)
           latest=$(($latest+1))
-          gh issue create --title "第${latest}回 雑談会ログ - `date '+%Y/%m/%d'`" --body "今週の雑談会のログです:memo:"
+          gh issue create --title "第${latest}回 雑談会ログ - `date  --date '+4 days' '+%Y/%m/%d'`" --body "今週の雑談会のログです:memo:"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
